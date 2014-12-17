@@ -9,6 +9,16 @@ module.exports = {
       name:req.body.name
     })
     .then(function(person) {
+      return Person.update({
+        id:person.id
+      }, {
+        active: true
+      })
+      .then(function(person) {
+        return person[0]
+      })
+    })
+    .then(function(person) {
       return Arrivals.create({
         person_id: person.id,
         timestamp: Date.now()
@@ -32,6 +42,18 @@ module.exports = {
 
     return Person.findOne({
       name:req.body.name
+    })
+    .then(function(person) {
+      console.log(person);
+      return Person.update({
+        id:person.id
+      }, {
+        active: false
+      })
+      .then(function(person) {
+          console.log(person);
+        return person[0]
+      })
     })
     .then(function(person) {
       return Departures.create({

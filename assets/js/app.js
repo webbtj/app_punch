@@ -2,35 +2,48 @@
 // Documentation can be found at: http://foundation.zurb.com/docs
 $(document).ready(function() {
 	var people = [];
-	$.ajax({
-		url:"http://localhost:1337/Person/find",
-		success:function(result){
-			people = result;
-			findPeople(people);
-			setInterval(function() {findPeople(people)}, 5000);
-		}
-	});
+	getPeople();
+	function getPeople() {
+		$.ajax({
+			url:"http://localhost:1337/Person/find",
+			success:function(result){
+				//people = result;
+				findPeople(result);
+				setInterval(function() {getPeople()}, 5000);
+			}
+		});
+	}
 
 	function findPeople(result) {
 		var text = '';
 		if(result.length > 0) {
-			text = "<section class='person' id='firstPerson'>" +
+			if(result[0].active != false) {
+				text = "<section class='person active'"
+			} else {
+				text = "<section class='person'"
+			}
+			text = text + "id='firstPerson'>" +
 			"<div class='in'></div>" +
 
 			"<div class='click-response'></div>" +
 
-			"<img class='img-in' src='assets/img/icon_jeff.svg'>" +
+			"<img class='img-in' src='assets/img/icon_josh.svg'>" +
 
 			"<h1>"+result[0].name+"</h1>" +
 
 			"</section>";
 			for(var i = 1; i<result.length; i++) {
-				text = text + "<section class='person'>" +
+				if(result[i].active != false) {
+					text = text + "<section class='person active'>"
+				} else {
+					text = text + "<section class='person'>"
+				}
+				text = text +
 				"<div class='in'></div>" +
 
 				"<div class='click-response'></div>" +
 
-				"<img class='img-in' src='assets/img/icon_jeff.svg'>" +
+				"<img class='img-in' src='assets/img/icon_josh.svg'>" +
 
 				"<h1>"+result[i].name+"</h1>" +
 
@@ -67,7 +80,8 @@ $(document).ready(function() {
 			//todo post to this url and update the user based on the name with the current time/date
 			$.post("http://localhost:1337/depart",
 				{
-					name:this.childNodes[3].innerHTML
+					name:this.childNodes[3].innerHTML,
+					active: false
 				}, function(result) {
 					console.log('depart.');
 				});
@@ -77,7 +91,8 @@ $(document).ready(function() {
 		else {
 			$.post("http://localhost:1337/arrive",
 				{
-					name:this.childNodes[3].innerHTML
+					name:this.childNodes[3].innerHTML,
+					active: true
 				}, function(result) {
 					console.log('arrive.');
 				});

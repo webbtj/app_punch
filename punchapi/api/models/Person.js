@@ -13,6 +13,9 @@ module.exports = {
     name: {
       type: 'STRING',
       required: true
+    },
+    active: {
+      type: 'BOOLEAN'
     }
   }
 };

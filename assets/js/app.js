@@ -38,19 +38,21 @@ $(document).ready(function() {
 					//todo post to this url and update the user based on the name with the current time/date
 					$.post("http://localhost:1337/depart",
 					{
-					  name:'something.'
+					  name:this.childNodes[3].innerHTML
 					}, function(result) {
 					  console.log('depart.');
 					});
+					event.stopPropagation();
 					$(this).removeClass('active');
 				}
 				else {
 					$.post("http://localhost:1337/arrive",
 					{
-						name:'something.'
+						name:this.childNodes[3].innerHTML
 					}, function(result) {
 						console.log('arrive.');
 					});
+					event.stopPropagation();
 					$(this).addClass('active');
 				}
 

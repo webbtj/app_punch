@@ -34,7 +34,9 @@ module.exports.routes = {
 
   '/': {
     view: 'homepage'
-  }
+  },
+  'post /arrive':'PersonController.arrive',
+  'post /depart':'PersonController.depart'
 
   /***************************************************************************
   *                                                                          *

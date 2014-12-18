@@ -3,13 +3,13 @@
 $(document).ready(function() {
 	var people = [];
 	getPeople();
+	setInterval(function() {getPeople()}, 300000);
+
 	function getPeople() {
 		$.ajax({
-			url:"http://localhost:1337/Person/find",
+			url:"http://localhost:1337/getList",
 			success:function(result){
-				//people = result;
 				findPeople(result);
-				setInterval(function() {getPeople()}, 5000);
 			}
 		});
 	}
@@ -77,7 +77,6 @@ $(document).ready(function() {
 	//bind click event to a person as they are created
 	$( "body" ).delegate( ".person", "click", function() {
 		if($(this).hasClass('active')) {
-			//todo post to this url and update the user based on the name with the current time/date
 			$.post("http://localhost:1337/depart",
 				{
 					name:this.childNodes[3].innerHTML,

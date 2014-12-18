@@ -19,16 +19,18 @@ module.exports = {
       })
     })
     .then(function(person) {
+      var timeStamp = Date.now();
+      var date = new Date(timeStamp);
       return Arrivals.create({
         person_id: person.id,
-        timestamp: Date.now()
+        time: Date.now(),
+        day: date.getDay()
       })
       .then(function(arrival) {
         return person
       })
     })
     .then(function(person) {
-      console.log(person.name + ' has arrived.');
       return res.send(200);
     })
     .catch(function(err) {
@@ -39,38 +41,47 @@ module.exports = {
   },
 
   depart: function (req, res) {
-
     return Person.findOne({
       name:req.body.name
     })
     .then(function(person) {
-      console.log(person);
       return Person.update({
         id:person.id
       }, {
         active: false
       })
       .then(function(person) {
-          console.log(person);
         return person[0]
       })
     })
     .then(function(person) {
-      return Departures.create({
-        person_id: person.id,
-        timestamp: Date.now()
-      })
+        var timeStamp = Date.now();
+        var date = new Date(timeStamp);
+        return Departures.create({
+          person_id: person.id,
+          time: Date.now(),
+          day: date.getDay()
+        })
       .then(function(departure) {
         return person
       })
     })
     .then(function(person) {
-      console.log(person.name + ' has left.');
       return res.send(200);
     })
     .catch(function(err) {
       console.log(err);
       return res.send(err);
     })
+  },
+
+  orderList: function (req, res) {
+    return Person.find()
+      .then(function(people) {
+        //todo determine the best order for people arriving and leaving.
+        console.log('List order updated.');
+        return res.send(people);
+      });
   }
+
 };

@@ -13,5 +13,24 @@ module.exports.bootstrap = function(cb) {
 
   // It's very important to trigger this callback method when you are finished
   // with the bootstrap!  (otherwise your server will never lift, since it's waiting on the bootstrap)
+  var cronJob = require('cron').CronJob;
+  //todo write a cron job to calculate the new estimated arrival/departure time
+  var calculateArrivals = new cronJob('00 * * * * *', function(){
+    try {
+      ListOrderService.calcArrivals(function(err, data) {
+        if((err)) {
+          console.log(err);
+        } else if (!(data)) {
+          console.log('No data returned from arrivals list')
+        } else {
+          console.log(data);
+        }
+      });
+    }catch(ex) {
+      sails.log.error(ex);
+      done();
+    }
+  });
+  calculateArrivals.start();
   cb();
 };

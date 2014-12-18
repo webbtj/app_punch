@@ -4,13 +4,16 @@
 module.exports = {
 
   attributes: {
-    timestamp: {
+    time: {
       type: 'STRING',
       required: true
     },
     person_id: {
       type: 'INTEGER',
       required: true
+    },
+    day: {
+      type: 'INTEGER'
     }
   }
 };

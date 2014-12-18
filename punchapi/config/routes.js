@@ -36,7 +36,8 @@ module.exports.routes = {
     view: 'homepage'
   },
   'post /arrive':'PersonController.arrive',
-  'post /depart':'PersonController.depart'
+  'post /depart':'PersonController.depart',
+  'get /getList':'PersonController.orderList'
 
   /***************************************************************************
   *                                                                          *

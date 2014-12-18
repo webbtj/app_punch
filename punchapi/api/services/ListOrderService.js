@@ -6,8 +6,6 @@ var q = require('q');
 exports.calcArrivals = function(cb) {
   return Person.find({})
     .then(function(people) {
-      //todo create function to return a persons departures and calc average
-
       //todo loop through all people and run both arrival and departure calculations and update the people
       var promises = [];
       var calcArrival = function(person) {

@@ -77,11 +77,34 @@ module.exports = {
 
   orderList: function (req, res) {
     return Person.find()
+      .sort({ arrival_time: 'asc' })
       .then(function(people) {
+        var orderedList = [];
+        var currentTime = Date.now();
+        var temp = 0;
+        //find the difference between stored and current time
+        for(var i = 0; i < people.length; i++) {
+          if(people[i].active == false) {
+            temp = currentTime - people[i].arrival_time;
+          } else {
+            temp = currentTime - people[i].departure_time;
+          }
+          //make time difference positive
+          if(temp < 0) {
+            temp = temp * -1;
+          }
+          people[i].difference = temp;
+        }
+        //sort the people by their positive difference from the current time
+        people.sort(function(a,b) { return parseFloat(a.difference) - parseFloat(b.difference) } );
         //todo determine the best order for people arriving and leaving.
         console.log('List order updated.');
         return res.send(people);
-      });
+      })
+      .catch(function(err) {
+        console.log(err);
+        return res.send(err);
+      })
   }
 
 };

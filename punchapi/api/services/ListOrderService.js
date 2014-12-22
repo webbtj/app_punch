@@ -18,7 +18,8 @@ exports.calcArrivals = function(cb) {
           if((err)) {
             console.log(err);
             deferred.reject(500);
-          } else if (!(arrivals)) {
+          } else if (arrivals.length == 0) {
+            //todo set arrival to 9am that day
             deferred.resolve(400);
           } else {
             var totalTime = 0;
@@ -67,7 +68,8 @@ exports.calcArrivals = function(cb) {
           if((err)) {
             console.log(err);
             deferred.reject(500);
-          } else if (!(departures)) {
+          } else if (departures.length == 0) {
+            //todo set departure time to 5pm that day
             deferred.resolve(400);
           } else {
             var totalTime = 0;

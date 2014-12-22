@@ -4,7 +4,6 @@
 var q = require('q');
 //update all users with new arrival and departure times
 exports.calcArrivals = function(cb) {
-  //todo need to check that there is data for the current day. the first time its run there may not be and then arrival/departure time gets stored as NaN
   return Person.find({})
     .then(function(people) {
       var promises = [];
@@ -18,9 +17,27 @@ exports.calcArrivals = function(cb) {
           if((err)) {
             console.log(err);
             deferred.reject(500);
+            //if no arrival data exists for that user on that day
           } else if (arrivals.length == 0) {
-            //todo set arrival to 9am that day
-            deferred.resolve(400);
+            var arrivalDate = new Date(Date.now());
+            var arrivalTime = new Date(arrivalDate.getFullYear()+
+              ' '+(arrivalDate.getMonth()+1)+
+              ' '+arrivalDate.getDate()+',09:00:00');//set to 9am
+            Person.update({
+              id:person.id
+            }, {
+              arrival_time: arrivalTime.valueOf()
+            }, function(err, person) {
+              if((err)) {
+                console.log(err);
+                deferred.resolve(500);
+              } else if (!(person)) {
+                console.log('Something went wrong finding a person.');
+                deferred.resolve(400)
+              } else {
+                deferred.resolve(200);
+              }
+            });
           } else {
             var totalTime = 0;
             for(var i = 0; i<arrivals.length; i++) {
@@ -68,9 +85,27 @@ exports.calcArrivals = function(cb) {
           if((err)) {
             console.log(err);
             deferred.reject(500);
+            //if no departure data exists for that user on that day
           } else if (departures.length == 0) {
-            //todo set departure time to 5pm that day
-            deferred.resolve(400);
+            var departureDate = new Date(Date.now());
+            var departureTime = new Date(departureDate.getFullYear()+
+              ' '+(departureDate.getMonth()+1)+
+              ' '+departureDate.getDate()+',17:00:00'); //set to 5:00pm
+            Person.update({
+              id:person.id
+            }, {
+              departure_time: departureTime.valueOf()
+            }, function(err, person) {
+              if((err)) {
+                console.log(err);
+                deferred.resolve(500);
+              } else if (!(person)) {
+                console.log('Something went wrong finding a person.');
+                deferred.resolve(400)
+              } else {
+                deferred.resolve(200);
+              }
+            });
           } else {
             var totalTime = 0;
             for(var i = 0; i<departures.length; i++) {

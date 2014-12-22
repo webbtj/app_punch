@@ -97,7 +97,6 @@ module.exports = {
         }
         //sort the people by their positive difference from the current time
         people.sort(function(a,b) { return parseFloat(a.difference) - parseFloat(b.difference) } );
-        //todo determine the best order for people arriving and leaving.
         console.log('List order updated.');
         return res.send(people);
       })

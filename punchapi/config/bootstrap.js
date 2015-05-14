@@ -13,6 +13,7 @@ module.exports.bootstrap = function(cb) {
 
   var cronJob = require('cron').CronJob;
   //cron job runs each day at 6am
+  //var calculateArrivals = new cronJob('00 * * * * *', function(){
   var calculateArrivals = new cronJob('00 00 6 * * *', function(){
     try {
       ListOrderService.calcArrivals(function(err, data) {
